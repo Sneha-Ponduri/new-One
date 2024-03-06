@@ -15,11 +15,12 @@ import * as handpose from "@tensorflow-models/handpose";
 import Webcam from "react-webcam";
 import "./App.css";
 import { drawHand } from "./utilities";
+import { handRiseGesture } from "./HandRise";
 
 ///////// NEW STUFF IMPORTS
 import * as fp from "fingerpose";
-import victory from "./victory.png";
-import thumbs_up from "./thumbs_up.png";
+// 
+    
 ///////// NEW STUFF IMPORTS
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
 
   ///////// NEW STUFF ADDED STATE HOOK
   const [emoji, setEmoji] = useState(null);
-  const images = { thumbs_up: thumbs_up, victory: victory };
+  
   ///////// NEW STUFF ADDED STATE HOOK
 
   const runHandpose = async () => {
@@ -68,12 +69,12 @@ function App() {
 
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
-          fp.Gestures.VictoryGesture,
-          fp.Gestures.ThumbsUpGesture,
+          // 
+          handRiseGesture
         ]);
-        const gesture = await GE.estimate(hand[0].landmarks, 4);
+        const gesture =  await GE.estimate(hand[0].landmarks, 4);
         if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-          // console.log(gesture.gestures);
+          console.log(gesture.gestures);
 
           const confidence = gesture.gestures.map(
             (prediction) => prediction.confidence
@@ -130,18 +131,19 @@ function App() {
           }}
         />
         {/* NEW STUFF */}
-        {emoji !== null ? (
+        {emoji  ? (
           <img
-            src={images[emoji]}
+            src="/finalhand.png"
             style={{
               position: "absolute",
               marginLeft: "auto",
               marginRight: "auto",
               left: 400,
-              bottom: 500,
+              bottom: 430,
               right: 0,
               textAlign: "center",
               height: 100,
+              width : 200
             }}
           />
         ) : (
